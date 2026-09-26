@@ -1,0 +1,256 @@
+/* ==========================================================================
+   About me 頁 — 沿用原站排版，只替換 experience 區塊為時間軸、新增聯絡方式
+   字級對應原站規格：H1 174px / H5 30px / Body XL 50px / Body Medium 20px
+   ========================================================================== */
+
+/* UNA CHEN 置於首屏正中央（扣掉 sticky header 的高度）*/
+.about-hero {
+  min-height: calc(100vh - var(--nav-h));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 40px;
+}
+.about-hero h1 {
+  font-size: var(--h1);
+  font-weight: var(--h1-fw);
+  line-height: var(--h1-lh);
+  letter-spacing: var(--h1-ls);
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* 內容堆疊：原站主容器 1200px、區塊間距 80px */
+.about-intro {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 40px 0;
+  text-align: left;
+}
+.about-intro .kicker {
+  font-size: var(--h5);
+  font-weight: var(--h5-fw);
+  line-height: var(--h5-lh);
+  letter-spacing: var(--h5-ls);
+  color: var(--ink);
+  margin-bottom: 80px;
+}
+/* 強制斷行只在寬螢幕生效；窄螢幕交還給自然換行 */
+.about-statement .lg-br { display: inline; }
+
+.about-statement {
+  font-size: var(--body-xl);
+  font-weight: var(--xl-fw);
+  line-height: var(--xl-lh);
+  letter-spacing: var(--xl-ls);
+  /* 原站 .framer-1bsj5h7 的實際上限；在 1200px 容器裡，
+     右緣大約落在置中的 CHEN 最後一個 N 上 */
+  max-width: 759px;
+  margin: 0 0 80px;
+}
+
+/* 照片在左、文字在右，間距 90px（版型照原站 .framer-66ses4，
+   但比例改為 2.4 : 1 —— 文字寬度約為照片的 0.42，低於一半）*/
+.about-row {
+  display: flex;
+  align-items: center;
+  gap: 90px;
+}
+.about-photo {
+  flex: 2.4 1 0;
+  margin: 0;
+  aspect-ratio: 1.325;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.about-note {
+  flex: 1 1 0;
+  max-width: 320px;
+  font-size: var(--body-md);
+  font-weight: var(--md-fw);
+  line-height: var(--md-lh);
+  letter-spacing: var(--md-ls);
+  color: var(--ink);
+  margin: 0;
+}
+
+/* ---------- Timeline（取代原本 experience. 重疊文字區塊）---------- */
+.timeline-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 96px 40px 40px;
+  text-align: left;
+}
+/* 區塊標題列：標題靠左、按鈕靠右（沿用原站 about. 那一列的 space-between 版型）*/
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+.section-head .kicker { margin-bottom: 0; }
+
+.timeline-section .kicker {
+  font-size: var(--h5);
+  font-weight: var(--h5-fw);
+  line-height: var(--h5-lh);
+  letter-spacing: var(--h5-ls);
+  color: var(--ink);
+  margin-bottom: 40px;
+}
+.timeline-track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 120px 0;
+  overflow-x: auto;
+}
+.timeline-line {
+  position: absolute;
+  left: 0;
+  right: 60px;
+  top: 50%;
+  height: 1px;
+  background: var(--ink);
+  transform: translateY(-50%);
+}
+.timeline-line::after {
+  content: "";
+  position: absolute;
+  right: -60px;
+  top: 0;
+  width: 60px;
+  border-top: 1px dashed var(--ink);
+}
+.timeline-node {
+  position: relative;
+  flex: 0 0 auto;
+  width: 220px;
+  display: flex;
+  justify-content: center;
+}
+.timeline-node .stem {
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  background: var(--grey-300);
+  transform: translateX(-50%);
+}
+.timeline-node.above .stem { bottom: 6px; height: 46px; }
+.timeline-node.below .stem { top: 6px; height: 46px; }
+.timeline-node .dotmark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ink);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+.timeline-node .card {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.5;
+  /* 不可用 nowrap：像 "Bachelor's Degree in Fashion Design" 這種長字串
+     會溢出節點寬度壓到隔壁節點，在較窄的詳情面板裡尤其明顯 */
+  width: 200px;
+  overflow-wrap: break-word;
+}
+.timeline-node.above .card { bottom: calc(100% + 6px); }
+.timeline-node.below .card { top: calc(100% + 6px); }
+.timeline-node .card .date { font-weight: 600; margin-bottom: 2px; }
+.timeline-node .card .role { font-weight: 500; }
+.timeline-node .card .org { color: var(--grey-600); }
+
+/* ---------- 品牌 Logo 跑馬燈 ----------
+   裁切邊界對齊其他區塊的內容寬（1200 − 40×2 = 1120px），
+   所以 logo 是在內容邊緣進出，而不是視窗邊緣。
+   水平 padding 必須是 0：overflow 是在 padding box 裁切，
+   有左右內距的話 logo 會跑進內距區才消失。 */
+.brand-marquee {
+  width: min(100% - 80px, 1120px);
+  margin-inline: auto;
+  padding: 8px 0 64px;
+  overflow: hidden;
+}
+.brand-marquee .track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: marquee 22s linear infinite;
+}
+/* 用 margin-right 而非 gap：gap 只存在於項目「之間」，
+   12 張圖只有 11 個間隙，translateX(-50%) 會差半個間隙而接不上；
+   改成每張都帶右邊距後，總寬正好是單組的兩倍，循環才會無縫。 */
+.brand-marquee img {
+  height: 22px;
+  width: auto;
+  margin-right: 64px;
+  opacity: 0.55;
+  filter: grayscale(1);
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- 兩張作品照片 ---------- */
+.about-gallery {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px 96px;
+  display: flex;
+  align-items: flex-start;   /* 兩張上緣對齊 */
+  gap: 40px;
+}
+.about-gallery img {
+  min-width: 0;
+  width: 100%;
+  border-radius: 4px;
+  object-fit: cover;
+}
+/* 左大右小，比例 1.5 : 1（右邊約為左邊的 2/3）；兩張長寬比也各自不同 */
+.about-gallery img:first-child { flex: 1.5 1 0; aspect-ratio: 1.13208; }
+.about-gallery img:last-child  { flex: 1 1 0;   aspect-ratio: 1.28269; }
+
+/* ---------- 新增：聯絡方式區塊 ---------- */
+.about-contact {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 40px 96px;
+  text-align: left;
+}
+.about-contact .kicker { margin-bottom: 18px; }
+.about-contact .contact-links {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  font-size: 15px;
+  font-weight: 500;
+}
+.about-contact .contact-links a { border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
+.about-contact .contact-links a:hover { opacity: 0.6; }
+
+@media (max-width: 809px) {
+  .about-statement .lg-br { display: none; }
+  .about-row { flex-direction: column; gap: 32px; }
+  .about-note { max-width: none; }
+  .about-intro .kicker { margin-bottom: 40px; }
+  .about-statement { max-width: none; margin-bottom: 48px; }
+  .about-gallery { flex-direction: column; gap: 24px; }
+  .about-gallery img:first-child,
+  .about-gallery img:last-child { flex: none; width: 100%; }
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>UnaChen — Portfolio</title>
+<meta name="description" content="Discover Una, an innovative UI/UX Designer with a multidisciplinary background in graphic design, service design, and fashion design." />
+<meta property="og:title" content="UnaChen — Portfolio" />
+<meta property="og:description" content="UI/UX and service designer based in Milan. Selected work in product strategy, service design and user research." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/shelf.css" />
+</head>
+<body class="home">
+
+  <div class="shelf-scene">
+    <a class="shelf-wordmark" href="#/" id="wordmark">UNA</a>
+    <canvas id="shelfCanvas" aria-label="3D bookshelf of Una Chen's portfolio"></canvas>
+
+    <div class="shelf-hint" id="shelfHint">Drag to browse · Click a book to open</div>
+
+    <div id="shelfFallback" class="shelf-fallback">
+      <p>這個瀏覽器不支援 3D 書架效果，以下是所有內容的直接連結。</p>
+      <nav class="fallback-nav">
+        <a href="about.html">About me</a>
+        <a href="works/atm-milano.html">ATM Milano</a>
+        <a href="works/nexus.html">NEXUS</a>
+        <a href="works/easy-energy.html">Easy Energy</a>
+        <a href="works/phoenix.html">The Pavilion of Phoenix</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- 詳情面板：點書後原地浮出 -->
+  <aside id="detailPanel" class="detail-panel" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="dpTitle">
+    <button type="button" id="dpClose" class="dp-close" aria-label="Close">×</button>
+    <div class="dp-scroll" id="dpScroll">
+      <header class="dp-head">
+        <div class="dp-meta">
+          <span id="dpCategory"></span>
+          <span id="dpYear"></span>
+        </div>
+        <h1 class="dp-title" id="dpTitle"></h1>
+        <div class="dp-tags" id="dpTags"></div>
+        <p class="dp-intro" id="dpIntro"></p>
+        <div class="dp-bottom">
+          <div class="dp-metablock">
+            <div class="dp-meta-label" id="dpMetaLabel"></div>
+            <div class="dp-meta-value" id="dpMetaValue"></div>
+          </div>
+          <a class="dp-enter" id="dpEnter" href="#">More Detail →</a>
+        </div>
+      </header>
+
+    </div>
+  </aside>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/spring.js"></script>
+  <script src="js/books-data.js"></script>
+  <script src="js/procedural-art.js"></script>
+  <script src="js/book-factory.js"></script>
+  <script src="js/detail-panel.js"></script>
+  <script src="js/home-scene.js"></script>
+</body>
+</html>

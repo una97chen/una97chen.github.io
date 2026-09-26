@@ -1,0 +1,386 @@
+/* ==========================================================================
+   作品詳情頁共用樣式
+   數值逐項比對原站 Framer 存檔取得：
+     主標 110px / 600 / -0.06em / lh 0.9em / 靠左 / 兩行
+     區塊標籤 30px / 500 / -0.03em（沿用 --h5）
+     內文 20px / 500 / -0.04em（沿用 --body-md），段落 justify
+     強調段落與提問句 50px / 500 / -0.06em（沿用 --body-xl），置中
+   容器 1200px、桌機內距 80px（內容區 1040px）、平板以下 30px
+   --accent 由每頁 <body style="--accent:#xxx"> 帶入該作品主題色
+   ========================================================================== */
+
+.work-page {
+  --work-title: clamp(48px, 9vw, var(--work-title-max, 110px));  /* 各頁可覆寫 --work-title-max */
+  --work-gutter: 80px;   /* 原站桌機邊距；1200 - 160 = 內容區 1040px */
+  --work-w: 1200px;
+}
+
+/* ---------- Hero：右上角 meta + 左側大標 ---------- */
+.work-page .work-hero {
+  max-width: var(--work-w);
+  margin: 0 auto;
+  padding: 140px var(--work-gutter) 0;
+}
+
+/* meta：整組靠右，內部是直欄；每一組「LABEL: value」自己是一列 */
+.work-page .work-meta {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 56px;
+}
+.work-page .work-meta .meta-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.work-page .meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+.work-page .work-meta .label { color: #b3b3b3; }
+.work-page .work-meta .value { color: var(--ink); }
+
+/* 封面圖在左、主標在右，各佔一半，間距 70px */
+.work-page .work-headline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 70px;
+  margin-bottom: 80px;
+}
+.work-page .work-cover {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  height: 475px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+/* 固定尺寸的封面（Phoenix 用 365×365 方形，而非等分伸縮） */
+.work-page .work-cover--fixed {
+  flex: none;
+  width: 365px;
+  max-width: 100%;
+  height: 365px;
+}
+
+.work-page .work-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+}
+.work-page .work-title {
+  flex: 1 1 0;
+  min-width: 0;
+  font-size: var(--work-title);
+  font-weight: 600;
+  letter-spacing: -0.06em;
+  line-height: 0.9;
+  text-align: left;
+  margin: 0;
+}
+
+/* 主標下方的細分隔線：原站是 #f5f5f5，在白底上幾乎不可見，只作為節奏用的分界。
+   用 div 而非 <hr>，避開瀏覽器預設的 inset 邊框。 */
+.work-page .work-divider {
+  max-width: var(--work-w);
+  margin: 0 auto;
+  height: 1px;
+  background: #f5f5f5;
+  border: 0;
+}
+
+/* ---------- 內容區塊 ---------- */
+.work-page .work-section {
+  max-width: var(--work-w);
+  margin: 0 auto;
+  padding: 60px var(--work-gutter) 80px;
+  text-align: left;
+}
+.work-page .work-section .kicker {
+  font-size: var(--h5);
+  font-weight: var(--h5-fw);
+  line-height: var(--h5-lh);
+  letter-spacing: var(--h5-ls);
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+.work-page .work-section p {
+  font-size: var(--body-md);
+  font-weight: var(--md-fw);
+  line-height: 1.6;
+  letter-spacing: var(--md-ls);
+  color: var(--ink);
+  text-align: justify;
+  margin: 0 0 16px;
+}
+.work-page .work-section img {
+  margin-top: 32px;
+  border-radius: 4px;
+  width: 100%;
+}
+
+/* 原站 preset 的 --framer-font-weight-bold 與一般字重同為 500，
+   也就是 <strong> 在視覺上不會變粗。保留語意標籤，但字重不加粗。 */
+.work-page .work-section p strong { font-weight: 500; }
+
+/* 段落只佔內容寬的 2/3，靠右對齊、左側留白 */
+.work-page .work-section p.work-p--offset {
+  width: 66.667%;
+  margin-left: auto;
+}
+
+/* 引號圖示 + 大字：直向置中，間距 40px（原站 "Format quote" 元件）*/
+.work-page .work-callout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  margin: 24px 0;
+}
+.work-page .quote-icon {
+  width: 54px;
+  height: 54px;
+  flex: none;
+  margin: 0;
+}
+
+/* 強調段落與提問句：50px 置中。
+   選擇器要比 `.work-page .work-section p` 更具體（多一個 class），
+   否則會被上面那條的 color / text-align 蓋掉——這也是原本得靠 !important 的原因。 */
+.work-page .work-section p.work-lead {
+  font-size: var(--body-xl);
+  font-weight: var(--xl-fw);
+  line-height: var(--xl-lh);
+  letter-spacing: var(--xl-ls);
+  text-align: center;
+  margin: 24px 0;
+}
+.work-stat { color: var(--accent, var(--ink)); }
+/* goal 的提問句整句用主題色（原站 ATM Milano 是 #FF7900，與 37.5% 同色）*/
+.work-page .work-section p.work-lead--accent { color: var(--accent, var(--ink)); }
+
+/* ---------- 圖片群組 ---------- */
+.work-page .work-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 32px;
+}
+.work-page .work-grid.single { grid-template-columns: 1fr; }
+.work-page .work-grid img { width: 100%; border-radius: 4px; margin-top: 0; }
+.work-page .work-grid .span-2 { grid-column: 1 / -1; }
+
+.work-page .img-pending {
+  aspect-ratio: 3/2;
+  border-radius: 4px;
+  background: repeating-linear-gradient(45deg, #f2f2f2, #f2f2f2 10px, #e9e9e9 10px, #e9e9e9 20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--grey-600);
+  letter-spacing: 0.03em;
+}
+
+/* ---------- 引言：照片在左、引言在右（原站 .framer-1eque6k）---------- */
+.work-page .work-testimonial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 35px;
+  padding: 60px 0;
+}
+.work-page .testimonial-photo {
+  flex: none;
+  width: 427px;
+  max-width: 100%;
+  height: 350px;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.work-page .testimonial-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+}
+.work-page .testimonial-text {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.work-page .testimonial-text p { margin: 0; }
+
+/* results：圖片在上、引言在下。圖片依原站的算繪寬度 717px 置中 */
+.work-page .work-results-figure {
+  width: 100%;
+  max-width: 717px;
+  margin: 32px auto 0;
+}
+.work-page .work-results-figure img { width: 100%; margin: 0; }
+
+/* 引言與署名收窄到區塊寬的 80%，左右各向內縮。
+   p 要單獨列出，否則 `.work-page .work-section p` 的 margin 簡寫會蓋掉 margin:auto。 */
+.work-page .work-results-text {
+  width: 80%;
+  margin: 32px auto 0;
+}
+.work-page .work-results-text p { margin-left: 0; margin-right: 0; }
+
+/* 區塊內的影片：與引言同寬（80%），而非滿版 */
+.work-page .work-section .work-video {
+  width: 80%;
+  max-width: none;
+  margin: 40px auto 0;
+  padding: 0;
+}
+
+/* 沒有搭配照片的引言（Easy Energy 的 key impact 與 results 後方）*/
+.work-page .work-testimonial--text-only { justify-content: flex-start; }
+.work-page .work-testimonial--text-only .testimonial-text { flex: 1 1 100%; }
+
+/* 區塊內容收窄並置中（Easy Energy 的 key impact 與 goal）。
+   p 與 ol 要單獨列出：`.work-page .work-section p` 的 margin 簡寫具體度較高，
+   只寫 `> *` 會被它的 margin-left:0 蓋掉，區塊就會被釘在左邊。 */
+.work-page .work-section--narrow > *,
+.work-page .work-section--narrow > p,
+.work-page .work-section--narrow > ol {
+  max-width: 66.667%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.work-page .work-section--narrow > .kicker { max-width: none; }
+
+/* 整區文字置中（Easy Energy 的 key impact 與 goal）*/
+.work-page .work-section--center p,
+.work-page .work-section--center .work-list,
+.work-page .work-section--center .work-list li { text-align: center; }
+.work-page .work-section--center .work-list {
+  list-style-position: inside;
+  padding-left: 0;
+}
+
+/* 置中版的引言與署名（Easy Energy 用置中，ATM／NEXUS 用靠左）*/
+.work-page .work-section p.work-quote--center { text-align: center; }
+.work-page .work-section p.work-attr--center { text-align: center; }
+
+/* goal. 的編號清單 */
+.work-page .work-list {
+  margin: 24px 0 0;
+  padding-left: 1.4em;
+  font-size: var(--body-md);
+  font-weight: var(--md-fw);
+  line-height: 1.6;
+  letter-spacing: var(--md-ls);
+  color: var(--ink);
+  text-align: justify;
+}
+.work-page .work-list li { margin-bottom: 14px; }
+.work-page .work-list strong { font-weight: 500; }
+
+/* ---------- 引言 ---------- */
+/* 原站是 <h5>：30px / italic / 500 / -0.03em / #333，靠左 */
+.work-page .work-section p.work-quote {
+  font-size: var(--h5);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: var(--h5-ls);
+  color: #333333;
+  text-align: left;
+}
+.work-page .work-quote::before { content: "“"; }
+.work-page .work-quote::after { content: "”"; }
+/* 署名沿用內文層級：20px / 500 / 正體 / -0.04em */
+.work-page .work-section p.work-quote-attr {
+  margin-top: 12px;
+  font-size: var(--body-md);
+  font-weight: var(--md-fw);
+  line-height: var(--md-lh);
+  letter-spacing: var(--md-ls);
+  color: var(--ink);
+  text-align: left;
+}
+
+/* ---------- 影片 ---------- */
+.work-page .work-video {
+  max-width: var(--work-w);
+  margin: 60px auto 0;
+  padding: 0 var(--work-gutter);
+}
+/* 影片外框：兩組版型共用 */
+.work-video .ratio {
+  position: relative;
+  padding-top: 56.25%;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.work-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+/* ---------- Pinterest 風格瀑布流（Other Works）----------
+   用 CSS columns 而非 grid：圖片高度不一，columns 會讓每欄各自往下堆疊、
+   不留橫向空隙。代價是閱讀順序變成「由上往下、再換欄」，
+   對純圖片的 gallery 沒有影響。 */
+.work-page .gallery {
+  column-count: 3;
+  column-gap: 20px;
+}
+.work-page .gallery-item {
+  break-inside: avoid;      /* 避免圖片被切成兩欄 */
+  page-break-inside: avoid; /* 舊版瀏覽器 */
+  margin: 0 0 20px;
+}
+.work-page .gallery-item img {
+  display: block;
+  width: 100%;
+  margin: 0;
+  border-radius: 4px;
+}
+
+@media (max-width: 899px) {
+  .work-page .gallery { column-count: 2; }
+}
+@media (max-width: 599px) {
+  .work-page .gallery { column-count: 1; }
+}
+
+/* ---------- 頁尾的 Show More（靠右）---------- */
+.work-page .work-explore {
+  max-width: var(--work-w);
+  margin: 0 auto;
+  padding: 96px var(--work-gutter);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+@media (max-width: 1199px) {
+  .work-page { --work-gutter: 30px; }
+  .work-page .work-hero { padding-top: 60px; }
+}
+
+@media (max-width: 809px) {
+  .work-page .work-callout { gap: 24px; }
+  .work-page .work-section p.work-p--offset { width: 100%; }
+  .work-page .work-testimonial { flex-direction: column; gap: 24px; padding: 30px 0; }
+  .work-page .testimonial-photo { width: 100%; height: auto; aspect-ratio: 427 / 350; }
+  .work-page .work-hero,
+  .work-page .work-section,
+  .work-page .work-explore,
+  .work-page .work-video { padding-left: 20px; padding-right: 20px; }
+  .work-page .work-meta { justify-content: flex-start; }
+  .work-page .work-headline { flex-direction: column; align-items: stretch; gap: 20px; margin-bottom: 48px; }
+  .work-page .work-title { order: 0; }
+  .work-page .work-cover { order: 1; height: 317px; }
+  .work-page .work-cover--fixed { width: 100%; height: 317px; }
+  .work-page .work-grid { grid-template-columns: 1fr; }
+}

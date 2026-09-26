@@ -1,0 +1,245 @@
+/* ==========================================================================
+   首頁書架 + 詳情面板
+   書架佔滿視窗；點書後書本移到左側，面板由右側滑入（直式螢幕改為底部升起）
+   ========================================================================== */
+
+html, body.home {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #f2f1ee;
+}
+
+.shelf-scene {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+#shelfCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+/* 左上角品牌字 */
+.shelf-wordmark {
+  position: absolute;
+  top: 32px;
+  left: 40px;
+  z-index: 6;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  transition: opacity 0.3s ease;
+}
+.shelf-wordmark:hover { opacity: 0.55; }
+
+/* 書架下方提示；hover 到書本時改顯示書名 */
+.shelf-hint {
+  position: absolute;
+  left: 50%;
+  top: 30px;
+  transform: translateX(-50%);
+  z-index: 5;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grey-600);
+  pointer-events: none;
+  transition: opacity 0.4s ease, color 0.4s ease;
+}
+.shelf-hint.named {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 17px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--ink);
+}
+body.transit .shelf-hint,
+body.transit .shelf-wordmark { opacity: 0; }
+
+.shelf-fallback {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+  padding: 20px;
+  background: #f2f1ee;
+  z-index: 8;
+}
+.fallback-nav { display: flex; flex-direction: column; gap: 12px; }
+.fallback-nav a {
+  font-size: 15px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 2px;
+}
+
+/* 內容庫：留在 DOM 供搜尋引擎與螢幕閱讀器讀取，畫面上不顯示 */
+.content-store { display: none; }
+
+/* ---------- 詳情面板 ---------- */
+.detail-panel {
+  --dp-accent: #111;
+  --dp-head-bg: #111;
+  --dp-head-ink: #fff;
+  --dp-head-line: rgba(255,255,255,0.32);
+  --dp-head-dim: rgba(255,255,255,0.72);
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 20;
+  width: min(52vw, 680px);
+  height: 100%;
+  background: var(--paper);
+  box-shadow: -24px 0 60px rgba(0, 0, 0, 0.12);
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+}
+body.detail-open .detail-panel {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dp-scroll {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dp-close {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--dp-head-line);
+  background: transparent;
+  color: var(--dp-head-ink);
+  font-size: 20px;
+  line-height: 1;
+  transition: background 0.25s ease;
+}
+.dp-close:hover { background: rgba(127,127,127,0.18); }
+.dp-close:focus-visible { outline: 2px solid var(--dp-head-ink); outline-offset: 3px; }
+
+/* 頁首：帶入該作品主題色 */
+.dp-head {
+  /* 撐滿整個面板：主題色鋪到底，不留白色空白區 */
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--dp-head-bg);
+  color: var(--dp-head-ink);
+  padding: 72px 56px 56px;
+  transition: background-color 0.5s ease;
+}
+/* 把 meta + More Detail 推到面板底部 */
+.dp-bottom { margin-top: auto; }
+.dp-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--dp-head-line);
+  margin-bottom: 24px;
+}
+.dp-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(28px, 3.6vw, 46px);
+  line-height: 1.1;
+  margin: 0 0 16px;
+}
+.dp-tags {
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  color: var(--dp-head-dim);
+  margin-bottom: 20px;
+}
+.dp-tags span { margin-right: 12px; white-space: nowrap; }
+.dp-intro {
+  /* 內文用無襯線：Playfair Display SC 是小型大寫，整段讀起來太吃力 */
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0 0 32px;
+  color: var(--dp-head-ink);
+  opacity: 0.95;
+}
+.dp-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-top: 20px;
+  border-top: 1px solid var(--dp-head-line);
+}
+
+/* More Detail：沿用原站 pill 按鈕邏輯，配色隨主題色自動反相 */
+.dp-enter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: var(--dp-head-ink);
+  color: var(--dp-head-bg);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.dp-enter:hover { opacity: 0.82; transform: translateX(3px); }
+.dp-enter:focus-visible { outline: 2px solid var(--dp-head-ink); outline-offset: 3px; }
+.dp-meta-label {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dp-head-dim);
+}
+.dp-meta-value { font-size: 13px; margin-top: 4px; }
+
+/* ---------- 直式／窄螢幕：面板改為底部升起 ---------- */
+@media (max-width: 860px), (orientation: portrait) {
+  .detail-panel {
+    top: auto;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 72vh;
+    border-radius: 18px 18px 0 0;
+    transform: translateY(100%);
+    box-shadow: 0 -20px 50px rgba(0,0,0,0.16);
+  }
+  body.detail-open .detail-panel { transform: translateY(0); }
+
+  .dp-head { padding: 40px 24px 28px; }
+  .dp-close { top: 14px; right: 16px; }
+  .shelf-wordmark { top: 20px; left: 20px; }
+  .shelf-hint { top: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detail-panel { transition-duration: 0.01ms; }
+}

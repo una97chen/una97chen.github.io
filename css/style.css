@@ -1,0 +1,158 @@
+/* ==========================================================================
+   UnaChen Portfolio v2 — Global Stylesheet
+   字體：Inter(全站無襯線) + Playfair Display SC(唯一襯線體，小型大寫：面板標題 / 案例標題 / 裝飾書)
+   ========================================================================== */
+
+:root {
+  --ink: #111111;
+  --paper: #ffffff;
+  --grey-600: #6b6b6b;
+  --grey-300: #d8d8d8;
+  --grey-100: #f4f4f4;
+  --nav-h: 76px;
+  --max-w: 1160px;
+  /* Playfair Display SC 只有 400 / 700 / 900，沒有 500 與 600 */
+  --serif: "Playfair Display SC", "Playfair Display", Georgia, "Times New Roman", serif;
+
+  /* 字級尺標 — 數值逐項比對原站 Framer 存檔的 styles-preset 取得，
+     包含它自己的三個斷點（桌機 ≥1200px / 平板 810–1199px / 手機 ≤809px）。
+     字距一律為負值，這是原站字體處理的關鍵特徵，少了會鬆散很多。 */
+  --h1: 174px;      --h1-ls: -0.09em;  --h1-lh: 1em;      --h1-fw: 600;
+  --h5: 30px;       --h5-ls: -0.03em;  --h5-lh: 1.2em;    --h5-fw: 500;
+  --body-xl: 50px;  --xl-ls: -0.06em;  --xl-lh: 1.1em;    --xl-fw: 500;
+  --body-md: 20px;  --md-ls: -0.04em;  --md-lh: 1.2em;    --md-fw: 500;
+  --sans: "Inter", -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+.wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ---------- 自訂游標放大提示（沿用原站按鈕游標效果）---------- */
+.cursor-scale {
+  transition: transform 0.25s ease;
+}
+.cursor-scale:hover { transform: scale(1.04); }
+
+/* ---------- Header（只在作品/About頁出現，首頁書架不出現） ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--grey-100);
+}
+.site-header .logo {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+.site-header .logo:hover { opacity: 0.6; }
+.site-header nav { display: flex; gap: 28px; }
+.site-header nav a {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  opacity: 0.75;
+}
+.site-header nav a:hover { opacity: 1; }
+
+/* ---------- Footer（只在作品/About頁出現） ---------- */
+.site-footer {
+  background: #0d0d0d;
+  color: #fff;
+  padding: 40px;
+}
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: #fff;
+  color: #0d0d0d;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+}
+/* 實心黑底白字：給白底頁面用（.pill-btn 本身是白底，只適用於深色區塊）*/
+.pill-btn.pill-solid {
+  background: var(--ink);
+  color: #fff;
+}
+.pill-btn.pill-solid:hover { opacity: 0.82; }
+
+.pill-btn.ghost {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+.footer-bottom .links { display: flex; gap: 18px; }
+.footer-bottom .links a:hover { opacity: 0.7; }
+
+/* ---------- 內容區塊共用：小寫句點標籤 ---------- */
+.kicker {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--grey-600);
+  margin-bottom: 14px;
+  text-transform: lowercase;
+}
+
+.section {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 96px 40px;
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .wrap, .section { padding-left: 20px; padding-right: 20px; }
+  .site-header { padding: 0 20px; }
+  .site-footer { padding: 56px 20px 28px; }
+}
+
+/* 原站的兩個斷點 */
+@media (max-width: 1199px) {
+  :root { --h1: 116px; --h5: 24px; --body-xl: 40px; --body-md: 16px; }
+}
+@media (max-width: 809px) {
+  :root { --h1: 76px; --h5: 19px; --body-xl: 28px; --body-md: 16px; }
+}
+
+/* 全站一律使用預設箭頭游標，連結與按鈕不切換成手指 */
+a, button, summary, [role="button"], .pill-btn, canvas {
+  cursor: default;
+}
